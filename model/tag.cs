@@ -11,6 +11,7 @@ namespace model
         public string label { get; set; }
         public string url { get; set; }
         public string target { get; set; }
+        public int frequency { get; set; }
 
     }
 }
