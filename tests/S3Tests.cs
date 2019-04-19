@@ -7,8 +7,9 @@ namespace tests
     public class S3Tests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void fileNotEmpty()
         {
+
         }
     }
 }
