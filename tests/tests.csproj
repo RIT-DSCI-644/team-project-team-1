@@ -50,6 +50,9 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -67,6 +70,10 @@
     <ProjectReference Include="..\aws\aws.csproj">
       <Project>{d3c9f259-c4fb-42a6-85fd-f1ce2a62b134}</Project>
       <Name>aws</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\model\model.csproj">
+      <Project>{e116e80b-f5ac-4dd7-826e-aab313b962e1}</Project>
+      <Name>model</Name>
     </ProjectReference>
     <ProjectReference Include="..\utilities\utilities.csproj">
       <Project>{d8846817-6783-4ca1-9b5a-968c95b72334}</Project>

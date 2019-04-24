@@ -19,13 +19,23 @@ namespace tests
         }
 
         [TestMethod]
-        public void ReadFirstItemInBucket() {
+        public void ReadFirstItemInBucket()
+        {
 
             var response = aws.S3CRUD.GetAllKeys().S3Objects.FirstOrDefault();
             var fileContents = aws.S3CRUD.ReadFromBucket(response.Key);
             Assert.IsNotNull(fileContents);
             System.Diagnostics.Trace.WriteLine(response.Key);
             System.Diagnostics.Trace.WriteLine(fileContents);
+        }
+
+        [TestMethod]
+        public void MainPageSerializationTest()
+        {
+            var response = aws.S3CRUD.GetMainPageData();
+            Assert.IsNotNull(response);
+            System.Diagnostics.Trace.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response)); // your logger
+            //System.Diagnostics.Trace.WriteLine(fileContents);
         }
     }
 }

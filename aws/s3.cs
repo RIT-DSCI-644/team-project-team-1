@@ -11,6 +11,9 @@ using System.Collections.Specialized;
 using System.IO;
 using utilities;
 
+using model;
+using Newtonsoft.Json;
+
 namespace aws
 {
     public class S3CRUD
@@ -96,6 +99,10 @@ namespace aws
             }
 
             return response;
+        }
+
+        public static MainPage GetMainPageData() {
+            return JsonConvert.DeserializeObject<MainPage>(ReadFromBucket("MainPage.txt"));
         }
     }
 }

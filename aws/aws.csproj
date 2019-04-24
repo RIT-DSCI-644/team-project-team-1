@@ -75,6 +75,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\resources\AWSSDK.S3.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -95,6 +98,10 @@
     <Analyzer Include="..\packages\AWSSDK.S3.3.3.101.5\analyzers\dotnet\cs\AWSSDK.S3.CodeAnalysis.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\model\model.csproj">
+      <Project>{e116e80b-f5ac-4dd7-826e-aab313b962e1}</Project>
+      <Name>model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\utilities\utilities.csproj">
       <Project>{d8846817-6783-4ca1-9b5a-968c95b72334}</Project>
       <Name>utilities</Name>
