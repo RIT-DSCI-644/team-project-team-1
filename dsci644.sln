@@ -11,7 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "utilities", "utilities\util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aws", "aws\aws.csproj", "{D3C9F259-C4FB-42A6-85FD-F1CE2A62B134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{530E96E0-0C96-4909-BD59-1AD6DF9E9361}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{A0A6755E-07C2-4CA4-8EDD-C4D0E6416570}"
+	ProjectSection(SolutionItems) = preProject
+		resources\AWSSDK.Core.dll = resources\AWSSDK.Core.dll
+		resources\AWSSDK.S3.dll = resources\AWSSDK.S3.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{D86D5F86-D8BB-4E43-BDDD-05D2BAEB7694}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +41,10 @@ Global
 		{D3C9F259-C4FB-42A6-85FD-F1CE2A62B134}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3C9F259-C4FB-42A6-85FD-F1CE2A62B134}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3C9F259-C4FB-42A6-85FD-F1CE2A62B134}.Release|Any CPU.Build.0 = Release|Any CPU
-		{530E96E0-0C96-4909-BD59-1AD6DF9E9361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{530E96E0-0C96-4909-BD59-1AD6DF9E9361}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{530E96E0-0C96-4909-BD59-1AD6DF9E9361}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{530E96E0-0C96-4909-BD59-1AD6DF9E9361}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86D5F86-D8BB-4E43-BDDD-05D2BAEB7694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86D5F86-D8BB-4E43-BDDD-05D2BAEB7694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86D5F86-D8BB-4E43-BDDD-05D2BAEB7694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86D5F86-D8BB-4E43-BDDD-05D2BAEB7694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

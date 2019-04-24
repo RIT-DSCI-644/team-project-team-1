@@ -14,3 +14,10 @@
 /tests/obj/Debug
 /utilities/bin/Debug
 /aws/obj/App.config
+/aws/bin
+/model/bin
+/UnitTestProject1/bin/Debug
+/UnitTestProject1/obj/Debug
+/utilities/bin/x64/Debug
+/utilities/bin/x86/Debug
+/tests/bin/Debug
