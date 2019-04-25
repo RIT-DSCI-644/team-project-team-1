@@ -77,8 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="crypto.cs" />
-    <Compile Include="jsonHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordCloud.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

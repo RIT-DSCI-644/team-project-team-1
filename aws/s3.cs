@@ -24,6 +24,7 @@ namespace aws
         private static readonly string BUCKET_NAME = "team-proj-resources";
         private static readonly Amazon.RegionEndpoint REGION = Amazon.RegionEndpoint.USEast2;
         private static readonly AmazonS3Client s3Client = null;
+        private static readonly string MAIN_PAGE_DATA_FILENAME = "MainPage.txt";
 
         /// <summary>
         /// returns file payload from AWS S3 bucket as a string
@@ -101,8 +102,28 @@ namespace aws
             return response;
         }
 
-        public static MainPage GetMainPageData() {
-            return JsonConvert.DeserializeObject<MainPage>(ReadFromBucket("MainPage.txt"));
+        /// <summary>
+        /// returns all keys as a list of type string
+        /// </summary>
+        /// <param name="maxKeysReturned"></param>
+        /// <returns></returns>
+        public static List<string> GetAllKeysAsList(int maxKeysReturned = 1000)
+        {
+            return GetAllKeys(maxKeysReturned).S3Objects.Where(x=> x.Key != "MainPage.txt").Select(x => x.Key).ToList();
+        }
+
+        /// <summary>
+        /// get main page data from the bucket as strongly typed object of type MainPage
+        /// </summary>
+        /// <returns>MainPage object type</returns>
+        public static MainPage GetMainPageData()
+        {
+            return JsonConvert.DeserializeObject<MainPage>(ReadFromBucket(MAIN_PAGE_DATA_FILENAME));
+        }
+
+        public static IndividualPage GetIndividualPageDataByKeyName(string KeyName)
+        {
+            return JsonConvert.DeserializeObject<IndividualPage>(ReadFromBucket(KeyName));
         }
     }
 }

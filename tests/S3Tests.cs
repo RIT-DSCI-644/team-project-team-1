@@ -4,6 +4,8 @@ using aws;
 using Amazon.S3;
 using Amazon.S3.Model;
 using System.Linq;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace tests
 {
@@ -13,9 +15,9 @@ namespace tests
         [TestMethod]
         public void GetAllKeys()
         {
-            string response = aws.S3CRUD.GetAllKeys().ToString();
+            List<string> response = aws.S3CRUD.GetAllKeysAsList();
             Assert.IsNotNull(response);
-            System.Diagnostics.Trace.WriteLine(response);
+            System.Diagnostics.Trace.WriteLine(JsonConvert.SerializeObject(response));
         }
 
         [TestMethod]
@@ -34,8 +36,15 @@ namespace tests
         {
             var response = aws.S3CRUD.GetMainPageData();
             Assert.IsNotNull(response);
-            System.Diagnostics.Trace.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response)); // your logger
-            //System.Diagnostics.Trace.WriteLine(fileContents);
+            System.Diagnostics.Trace.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
+        }
+
+        [TestMethod]
+        public void IndividualPageSerializationTest()
+        {
+            var response = aws.S3CRUD.GetIndividualPageDataByKeyName(aws.S3CRUD.GetAllKeys().S3Objects.FirstOrDefault().Key);
+            Assert.IsNotNull(response);
+            System.Diagnostics.Trace.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
         }
     }
 }

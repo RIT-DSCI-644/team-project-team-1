@@ -8,13 +8,16 @@ using System.Text;
 
 namespace dsci644
 {
-    public partial class _Default : Page
+    public partial class Individual : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var response = aws.S3CRUD.GetMainPageData();
-            RenderTagCloud("holder1", response.WordCloud.Conservative.Tags);
-            RenderTagCloud("holder2", response.WordCloud.Liberal.Tags);
+            string strKey = Request.QueryString["id"];
+            if (string.IsNullOrEmpty(strKey))
+                Response.Redirect("~/");
+            lblName.Text = strKey;
+            var response = aws.S3CRUD.GetIndividualPageDataByKeyName(strKey+".txt");
+            RenderTagCloud("holder1", response.WordCloud.DistinctWords);
         }
 
         public void RenderTagCloud(string id, List<string> Tags)
@@ -29,8 +32,8 @@ namespace dsci644
             // Check to see if the startup script is already registered.
             if (!cs.IsStartupScriptRegistered(cstype, csname1))
             {
-                
-                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags);
+
+                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags, utilities.WordCloud.CloudContext.Individual);
                 cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
 
                 //set font-size
