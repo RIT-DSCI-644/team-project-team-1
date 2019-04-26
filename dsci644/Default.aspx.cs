@@ -13,11 +13,11 @@ namespace dsci644
         protected void Page_Load(object sender, EventArgs e)
         {
             var response = aws.S3CRUD.GetMainPageData();
-            RenderTagCloud("holder1", response.WordCloud.Conservative.Tags);
-            RenderTagCloud("holder2", response.WordCloud.Liberal.Tags);
+            RenderTagCloud("holder1", response.WordCloud.Conservative.Tags, response.WordCloud.Conservative.Frequencies);
+            RenderTagCloud("holder2", response.WordCloud.Liberal.Tags, response.WordCloud.Liberal.Frequencies);
         }
 
-        public void RenderTagCloud(string id, List<string> Tags)
+        public void RenderTagCloud(string id, List<string> Tags, List<double> Frequencies)
         {
             // Define the name and type of the client scripts on the page.
             String csname1 = "tagcloud" + id;
@@ -30,7 +30,8 @@ namespace dsci644
             if (!cs.IsStartupScriptRegistered(cstype, csname1))
             {
                 
-                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags);
+                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags, 
+                    utilities.WordCloud.CloudContext.HomePage, Frequencies);
                 cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
 
                 //set font-size

@@ -32,12 +32,8 @@ namespace dsci644
             // Check to see if the startup script is already registered.
             if (!cs.IsStartupScriptRegistered(cstype, csname1))
             {
-
                 StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags, utilities.WordCloud.CloudContext.Individual);
                 cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
-
-                //set font-size
-                //$("[*|href]:not([href])").find("text:contains('DEVIANTART')").attr("font-size","35")
             }
         }
     }

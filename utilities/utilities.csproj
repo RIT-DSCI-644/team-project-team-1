@@ -80,5 +80,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WordCloud.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\model\model.csproj">
+      <Project>{e116e80b-f5ac-4dd7-826e-aab313b962e1}</Project>
+      <Name>model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
