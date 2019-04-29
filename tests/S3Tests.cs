@@ -23,7 +23,6 @@ namespace tests
         [TestMethod]
         public void ReadFirstItemInBucket()
         {
-
             var response = aws.S3CRUD.GetAllKeys().S3Objects.FirstOrDefault();
             var fileContents = aws.S3CRUD.ReadFromBucket(response.Key);
             Assert.IsNotNull(fileContents);

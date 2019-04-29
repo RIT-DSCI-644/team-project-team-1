@@ -1,7 +1,55 @@
 ﻿<%@ Page Title="Conservative and Liberal Leaning Twitter Feed Analysis" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="dsci644._Default" %>
 
-<%@ Register TagPrefix="wcl" Namespace="WordCloud" %>
 <asp:Content ID="Scripts" ContentPlaceHolderID="cphScripts" runat="server">
+    <script type="text/javascript">   
+        //Called this method on any button click  event for Testing
+        var conservFreqData;
+        var libFreqData;
+        function setFrequencies(Param1, Param2) {
+            setLiberalFrequencies();
+            setConservativeFrequencies();
+        }
+        function setLiberalFrequencies() {
+            $.ajax({
+                type: "POST",
+                url: '<%= ResolveUrl("helper.aspx/GetLiberalData") %>',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                async: "true",
+                cache: "false",
+                success: function (msg) {
+                    // On success
+                    libFreqData = msg.d;
+                    //alert(msg.d);
+                },
+                Error: function (x, e) {
+                    alert(msg);
+                    // On Error
+                }
+            });
+        }
+        function setConservativeFrequencies() {
+            $.ajax({
+                type: "POST",
+                url: '<%= ResolveUrl("helper.aspx/GetConservativeData") %>',
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                //dataType: "json",
+                async: "true",
+                cache: "false",
+                success: function (msg) {
+                    // On success
+                    conservFreqData = msg.d;
+                    //alert(msg.d);
+                },
+                Error: function (x, e) {
+                    alert(msg);
+                    // On Error
+                }
+            });
+        }
+    </script>
 </asp:Content>
 <asp:Content ID="Style" ContentPlaceHolderID="cphStyle" runat="server">
     <style>

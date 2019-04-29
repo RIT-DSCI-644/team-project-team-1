@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 using model;
 
 namespace utilities
@@ -34,20 +35,28 @@ namespace utilities
         {
             StringBuilder sbCloud = new StringBuilder();
 
+            Dictionary<string, double> dic = Tags.Zip(Frequencies, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+
             sbCloud.AppendLine("<script type=text/javascript>");
             sbCloud.AppendLine("       $(document).ready(function () {");
             sbCloud.AppendLine("            var entries = [");
-            foreach (string Tag in Tags)
+
+            if (context == CloudContext.HomePage)
             {
-                if (context == CloudContext.HomePage)
+                foreach (var KeyValue in dic)
                 {
-                    sbCloud.AppendLine(string.Format("                {{ label: '{0}', url: '../Individual.aspx?id={0}', target: '_top' }},", Tag));
-                }
-                else
-                {
-                    sbCloud.AppendLine(string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},", Tag));
+                    sbCloud.AppendLine(string.Format("                {{ label: '{0}', url: '../Individual.aspx?id={0}', target: '_top' }},", KeyValue.Key));
                 }
             }
+            else
+            {
+                foreach (var KeyValue in dic.Where(t => t.Value != 1))
+                {
+                    sbCloud.AppendLine(string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},", KeyValue.Key));
+                }
+            }
+
             sbCloud.AppendLine("            ];");
             sbCloud.AppendLine("            var settings = {");
             sbCloud.AppendLine("                entries: entries,");
@@ -75,42 +84,62 @@ namespace utilities
 
             if (context == CloudContext.HomePage)
             {
-                sbCloud.AppendLine(GenerateWordFrequencies(Tags, Frequencies, MainPageWordFrequencyMatrix).ToString());
+                sbCloud.AppendLine(GenerateWordFrequencies(dic, MainPageWordFrequencyMatrix).ToString());
+                sbCloud.AppendLine("setFrequencies();");
             }
-
+            
             sbCloud.AppendLine("        });");
             sbCloud.AppendLine("</script>");
 
             return sbCloud;
         }
 
-        public static StringBuilder GenerateWordFrequencies(List<string> Tags, List<double> Frequencies, List<WordFrequencyMatrix> Matrix)
+        public static StringBuilder GenerateWordFrequencies(Dictionary<string, double> KeyValues, List<WordFrequencyMatrix> Matrix)
         {
             StringBuilder sbWordFrequencies = new StringBuilder();
             //set font-size
-            for (int i = 0; i < Tags.Count; i++)
+            foreach (var keyValue in KeyValues)
             {
-                var tag = Tags[i];
-                double freq = Frequencies[i];
+                var key = keyValue.Key;
+                double value = keyValue.Value;
                 for (int j = 0; j < Matrix.Count; j++)
                 {
                     var min = Matrix[j].Min;
                     var max = Matrix[j].Max;
                     var font = Matrix[j].FontSize;
-                    
-                    if ((freq >= min && freq <= max) || (freq >= max && j == (Matrix.Count - 1)))
+
+                    if ((value >= min && value <= max) || (value >= max && j == (Matrix.Count - 1)))
                     {
                         //found or set to max matrix value
-                        
+                        //$("[*|href]:not([href])").find("text:contains('DEVIANTART')").attr("font-size","35")
                         sbWordFrequencies.AppendLine(
-                            string.Format(            "$('[*|href]:not([href])').find(\"text:contains('{1}')\").attr('font-size','{0}');",
-                            font,tag.ToUpper()));
-                        
+                            string.Format("$('[*|href]:not([href])').find(\"text:contains('{1}')\").attr('font-size','{0}');",
+                            font, key.ToUpper()));
+
                     }
                 }
             }
-            //$("[*|href]:not([href])").find("text:contains('DEVIANTART')").attr("font-size","35")
             return sbWordFrequencies;
         }
+
+        public static void RenderTagCloud(string id, List<string> Tags, List<double> Frequencies, System.Web.UI.Page page, 
+            CloudContext context)
+        {
+            // Define the name and type of the client scripts on the page.
+            String csname1 = "tagcloud" + id;
+            Type cstype = page.GetType();
+
+            // Get a ClientScriptManager reference from the Page class.
+            ClientScriptManager cs = page.ClientScript;
+
+            // Check to see if the startup script is already registered.
+            if (!cs.IsStartupScriptRegistered(cstype, csname1))
+            {
+                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags,
+                    context, Frequencies);
+                cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
+            }
+        }
+
     }
 }

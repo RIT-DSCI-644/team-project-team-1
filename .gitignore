@@ -21,3 +21,10 @@
 /utilities/bin/x64/Debug
 /utilities/bin/x86/Debug
 /tests/bin/Debug
+/utilities/obj
+/tests/bin
+/tests/obj
+/NUnit.Tests1
+/aws/obj
+/dsci644/obj
+/model/obj
