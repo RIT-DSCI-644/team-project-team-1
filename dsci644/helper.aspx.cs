@@ -18,25 +18,13 @@ namespace dsci644
         [WebMethod]
         public static string GetConservativeData()
         {
-            if (mainPageData== null)
-                mainPageData = aws.S3CRUD.GetMainPageData();
-
-            Dictionary<string, double> dic = mainPageData.WordCloud.Conservative.Tags.Zip(
-                mainPageData.WordCloud.Conservative.Frequencies, (k, v) => new { k, v })
-              .ToDictionary(x => x.k, x => x.v);
-            return Newtonsoft.Json.JsonConvert.SerializeObject(dic);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(aws.S3CRUD.GetConservativeFrequencyData);
         }
 
         [WebMethod]
         public static string GetLiberalData()
         {
-            if (mainPageData == null)
-                mainPageData = aws.S3CRUD.GetMainPageData();
-
-            Dictionary<string, double> dic = mainPageData.WordCloud.Liberal.Tags.Zip(
-                mainPageData.WordCloud.Liberal.Frequencies, (k, v) => new { k, v })
-              .ToDictionary(x => x.k, x => x.v);
-            return Newtonsoft.Json.JsonConvert.SerializeObject(dic);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(aws.S3CRUD.GetLiberalFrequencyData);
         }
     }
 }

@@ -49,6 +49,14 @@ namespace dsci644
                 Path = "~/Scripts/jquery.svg3dtagcloud.min.js",
                 DebugPath = "~/Scripts/jquery.svg3dtagcloud.js",
             });
+            /*
+            ScriptManager.ScriptResourceMapping.AddDefinition(
+            "spinner",
+            new ScriptResourceDefinition
+            {
+                Path = "~/Scripts/spin.min.js",
+                DebugPath = "~/Scripts/spin.js",
+            });*/
         }
     }
 }

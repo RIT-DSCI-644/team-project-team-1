@@ -33,7 +33,7 @@ namespace tests
         [TestMethod]
         public void MainPageSerializationTest()
         {
-            var response = aws.S3CRUD.GetMainPageData();
+            var response = aws.S3CRUD.GetMainPageData;
             Assert.IsNotNull(response);
             System.Diagnostics.Trace.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(response));
         }

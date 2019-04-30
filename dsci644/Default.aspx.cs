@@ -12,13 +12,17 @@ namespace dsci644
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var response = aws.S3CRUD.GetMainPageData();
+            //var response = aws.S3CRUD.GetMainPageData;
             utilities.WordCloud.RenderTagCloud(
-                "holder1", response.WordCloud.Conservative.Tags, response.WordCloud.Conservative.Frequencies,this,
-                 utilities.WordCloud.CloudContext.HomePage);
+                "holder1", aws.S3CRUD.GetConservativeFrequencyData, this,
+                 utilities.WordCloud.CloudContext.HomePage, utilities.WordCloud.PoliticalLeaningContext.Conservative);
             utilities.WordCloud.RenderTagCloud(
-                "holder2", response.WordCloud.Liberal.Tags, response.WordCloud.Liberal.Frequencies,this,
-                utilities.WordCloud.CloudContext.HomePage);
+                "holder2", aws.S3CRUD.GetLiberalFrequencyData, this,
+                utilities.WordCloud.CloudContext.HomePage, utilities.WordCloud.PoliticalLeaningContext.Liberal);
+        }
+
+        private void RenderStats() {
+            //aws.S3CRUD.GetMainPageData.WordCloud
         }
     }
 }

@@ -16,6 +16,12 @@ namespace dsci644
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            aws.S3CRUD.LoadDataIntoApplicationState();
+        }
+
+        void Session_Start(object sender, EventArgs e)
+        {
+            
         }
     }
 }

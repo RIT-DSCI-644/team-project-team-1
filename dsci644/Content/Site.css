@@ -2,6 +2,15 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+*,
+*:before,
+*:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* Wrapping element */
@@ -18,6 +27,412 @@ textarea {
     max-width: 280px;
 }
 
+.header {
+    background-color: rgba(66, 6, 6, 0.10);
+    padding: 5px;
+    text-align: center;
+    font-size: 35px;
+}
+
+h2 {
+    color: #b31b1b;
+    font-size: 30px;
+    font-weight: normal;
+    margin-bottom: 0.7em;
+    line-height: 1.2;
+    font-family: Georgia, serif;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Style the footer */
+.footer {
+    clear: both;
+    background-color: rgba(66, 6, 6, 0.10);
+    padding: 5px;
+    text-align: center;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media (max-width: 600px) {
+    .column {
+        width: 100%;
+    }
+}
+
+/* Blockquotes */
+
+.blockquote.offset, .blockquote.impact {
+    font-family: Iowan Old Style, Georgia, Athelas, Baskerville, Sitka Display, Constansia, serif;
+    color: #444;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-left-color: #b31b1b;
+    clear: both;
+    font-size: 23px;
+    line-height: 1.55;
+    margin: 4px 30px 12px -60px;
+    background: none;
+    float: left;
+    width: 40%;
+    padding: 0 30px;
+    border-right: 3px solid #b31b1b;
+}
+
+    .blockquote.offset p, .blockquote.impact p {
+        font-size: 20px;
+        line-height: 1.45;
+    }
+
+    .blockquote footer, .blockquote.offset footer, .blockquote.impact footer {
+        background: none;
+        padding: 0;
+    }
+
+p, .blockquote, pre, figure, aside, ul, ol, dl, table, #main form {
+    margin-bottom: 1.5em;
+}
+
+    ul.custom.recursive {
+        width: 370px;
+        /*float: right;*/
+    }
+
+        ul.custom, ul.custom.recursive ul,
+        ol.custom, ol.custom.recursive ol {
+            padding-left: 0;
+        }
+
+            ul.custom > li, ul.custom.recursive ul > li {
+                list-style: none;
+                position: relative;
+                padding-left: 1.2em;
+            }
+
+                ul.custom > li:before, ul.custom.recursive ul > li:before {
+                    content: '\f0da';
+                    opacity: 0.5;
+                    position: absolute;
+                    left: 2px;
+                    line-height: inherit;
+                }
+
+            ul.custom.success > li, ul.custom.success.recursive ul > li,
+            ul.custom.warning > li, ul.custom.warning.recursive ul > li {
+                padding-left: 1.7em;
+            }
+
+            ul.custom.chevrons > li:before, ul.custom.chevrons.recursive ul > li:before {
+                content: '\f105';
+                font-size: 143%;
+                line-height: 1.09;
+            }
+
+            ul.custom.success > li:before, ul.custom.success.recursive ul > li:before {
+                content: '\f00c';
+                color: #008a00;
+                opacity: 1;
+                left: 1px;
+            }
+
+            ul.custom.warning > li:before, ul.custom.warning.recursive ul > li:before {
+                content: '\f071';
+                color: #cc1e1e;
+                opacity: 1;
+                left: 1px;
+            }
+
+            ol.custom > li, ol.custom.recursive ol > li {
+                list-style: none;
+                position: relative;
+                padding-left: 3em;
+                min-height: 2.2em;
+                margin-bottom: 1em;
+            }
+
+            li > ol.custom, ol.custom.recursive li > ol {
+                margin-top: 1.25em;
+            }
+
+            ol.custom, ol.custom.recursive ol {
+                counter-reset: ordered-list;
+            }
+
+                ol.custom > li:before, ol.custom.recursive ol > li:before {
+                    counter-increment: ordered-list;
+                    content: counter(ordered-list);
+                    position: absolute;
+                    left: 0;
+                    top: -0.3em;
+                    width: 2.2em;
+                    height: 2.2em;
+                    line-height: 2.2em;
+                    background: #eee;
+                    background: rgba(0,0,0,0.05);
+                    border-radius: 100%;
+                    /*font-family: $cwd-font-family-serif-alt;*/
+                    text-align: center;
+                }
+
+                ol.custom.large {
+                    margin-top: 3em;
+                    margin-bottom: 2em;
+                }
+
+                    ol.custom.large > li, ol.custom.large.recursive ol > li {
+                        padding-left: 5.5em;
+                        min-height: 4.4em;
+                        margin-bottom: 2em;
+                    }
+
+                        ol.custom.large > li:before, ol.custom.large.recursive ol > li:before {
+                            font-size: 200%;
+                        }
+
+/* Simple Columns */
+.two-col, .three-col, .four-col {
+    overflow: hidden;
+    clear: both;
+    margin-bottom: 1.5em;
+}
+
+    .two-col > *, .three-col > *, .four-col > * {
+        width: 100%;
+        margin-bottom: 1.5em;
+    }
+
+.cloud {
+    min-height: 480px;
+    min-width: 480px;
+}
+
+/* Tables */
+
+table {
+    font-size: 13px;
+    width: 100%;
+    margin-bottom: 3em;
+    border-collapse: collapse;
+}
+
+    table th[scope='col'], table thead th {
+        text-align: left;
+    }
+
+        table th[scope='col'].text-center, table thead th.text-center {
+            text-align: center;
+        }
+
+    table caption {
+        padding: 0.6em 0;
+        border-top: 2px solid #e8e8e8;
+        font-family: $cwd-font-family-sans-alt;
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    table .blank {
+        background: none !important;
+    }
+
+    table td, table th {
+        background: #fff;
+        padding: 0.4em 0.6em;
+        border: 1px solid #d9d9d9;
+        border-width: 0 1px;
+    }
+
+    table.compact td, table.compact th {
+        font-size: 12px;
+        padding: 0.2em 0.3em;
+    }
+
+    table td:first-child, table th:first-child {
+        border-left-width: 0;
+    }
+
+    table td:last-child, table th:last-child {
+        border-right-width: 0;
+    }
+
+    table th {
+        background: #fafafa;
+    }
+
+    table thead th {
+        background: #efefef;
+        border-bottom-width: 1px;
+    }
+
+    table.bordered tr > * {
+        border-width: 1px;
+    }
+
+    table.flat tr > * {
+        border-width: 0;
+    }
+
+    table.flat td, table.flat th {
+        padding: 0.8em;
+        background: #fafafa;
+    }
+
+    table.flat th {
+        background: #f2f2f2;
+    }
+
+        table.flat th[scope='col'], table.flat thead th {
+            background: #e6e6e6;
+        }
+
+    table.striped tr:nth-child(even) td {
+        background: #f7f7f7;
+    }
+
+    table.striped tbody tr:nth-child(even) th {
+        background: #f0f0f0;
+    }
+
+    table.flat.striped tr:nth-child(even) td {
+        background: #ededed;
+    }
+
+    table.flat.striped tbody tr:nth-child(even) th {
+        background: #e8e8e8;
+    }
+
+    table.colored td {
+        background: #f6ffff;
+        border-color: #afbfc9;
+    }
+
+    table.colored.striped tr:nth-child(even) > td {
+        background: #ebf3f8;
+    }
+
+    table.colored th[scope='col'], table.colored thead th,
+    table.flat.colored th[scope='col'], table.flat.colored thead th {
+        background: #cfe3ef;
+        border-color: #afbfc9;
+    }
+
+    table.flat.colored tr > th[scope='row'] {
+        border-right-width: 1px;
+    }
+
+    table.rainbow tr * {
+        border-color: #aaa;
+    }
+
+    table.rainbow tr > *:nth-child(5n+1) {
+        background: #f6ffff;
+    }
+
+    table.rainbow tr > *:nth-child(5n+2) {
+        background: #f6fff7;
+    }
+
+    table.rainbow tr > *:nth-child(5n+3) {
+        background: #fffff6;
+    }
+
+    table.rainbow tr > *:nth-child(5n+4) {
+        background: #fff7fa;
+    }
+
+    table.rainbow tr > *:nth-child(5n+5) {
+        background: #fcf7ff;
+    }
+
+    table.rainbow thead tr > *:nth-child(5n+1) {
+        background: #cfe3ef;
+    }
+
+    table.rainbow thead tr > *:nth-child(5n+2) {
+        background: #cfefd1;
+    }
+
+    table.rainbow thead tr > *:nth-child(5n+3) {
+        background: #efe7cf;
+    }
+
+    table.rainbow thead tr > *:nth-child(5n+4) {
+        background: #efd3d1;
+    }
+
+    table.rainbow thead tr > *:nth-child(5n+5) {
+        background: #e7d1f1;
+    }
+
+    table.rainbow.striped tr:nth-child(even) > td:nth-child(5n+1) {
+        background: #ebf3f8;
+    }
+
+    table.rainbow.striped tr:nth-child(even) > td:nth-child(5n+2) {
+        background: #ebf8ec;
+    }
+
+    table.rainbow.striped tr:nth-child(even) > td:nth-child(5n+3) {
+        background: #f8f5eb;
+    }
+
+    table.rainbow.striped tr:nth-child(even) > td:nth-child(5n+4) {
+        background: #f8edec;
+    }
+
+    table.rainbow.striped tr:nth-child(even) > td:nth-child(5n+5) {
+        background: #f5ecf9;
+    }
+
+    table.colored tr > th[scope='row'],
+    table.rainbow tr > th[scope='row'] {
+        background: #fafafa !important;
+    }
+
+    table.colored.striped tr:nth-child(even) > th[scope='row'], table.flat.colored .blank,
+    table.rainbow.striped tr:nth-child(even) > th[scope='row'], table.flat.rainbow .blank, table.rainbow thead th:not([scope='col']) {
+        background: #f0f0f0 !important;
+    }
+
+    table.flat.sectioned thead th {
+        border-bottom-width: 1px;
+    }
+
+    table.flat.sectioned tbody > tr:first-child > td {
+        border-top: 1px solid #d9d9d9;
+    }
+
+    table.flat.sectioned tbody > tr:first-child > th {
+        border-top: 1px solid #d9d9d9;
+    }
+
+    table.sectioned tbody:before {
+        content: '';
+        display: block;
+        height: 1.5em;
+    }
+
+.column .row .column .blockquote.offset {
+    width: 100%;
+}
+
+.column .row .column .statsOutput {
+    font-size: 20px;
+    line-height: 1.45;
+    font-family: Iowan Old Style, Georgia, Athelas, Baskerville, Sitka Display, Constansia, serif;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
@@ -27,5 +442,68 @@ textarea {
 
     .body-content {
         padding: 0;
+    }
+}
+
+@media (max-width: 992px) {
+    .column {
+        width: 100%;
+    }
+
+    ul.custom.recursive {
+        width: 100%;
+        float: left;
+    }
+}
+
+@media (max-width: 1200px) {
+    .blockquote.offset, .blockquote.impact {
+        font-family: Iowan Old Style, Georgia, Athelas, Baskerville, Sitka Display, Constansia, serif;
+        color: #444;
+        background: #fff;
+        border: 1px solid #e6e6e6;
+        border-left-color: #b31b1b;
+        clear: both;
+        font-size: 23px;
+        line-height: 1.55;
+        margin: 4px 30px 12px 0px;
+        background: none;
+        float: left;
+        width: 100%;
+        padding: 0 30px;
+        border-right: 3px solid #b31b1b;
+    }
+
+    ul.custom.recursive {
+        width: 100%;
+        float: left;
+    }
+}
+
+@media (max-width: 767px) {
+    blockquote.offset, blockquote.impact {
+        font-family: Iowan Old Style, Georgia, Athelas, Baskerville, Sitka Display, Constansia, serif;
+        font-size: 20px;
+        line-height: 1.45;
+        color: #444;
+        background: #fff;
+        border: 1px solid #e6e6e6;
+        border-left-color: #b31b1b;
+        margin: 1.25em 0;
+        padding: 15px 30px;
+        clear: both;
+    }
+
+        blockquote.offset p, blockquote.impact p {
+            font-size: 20px;
+            line-height: 1.45;
+        }
+
+    h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:last-child, p:last-child, ul:last-child, ol:last-child, dl:last-child, li:last-child, table:last-child, figure:last-child, aside:last-child, #main-content form:last-child, .panel:last-child, .row:last-child {
+        margin-bottom: 0;
+    }
+
+    h1, h2, h3, h4, h5, h6, p, ul, ol, dl, table, .h1, .h2, .h3, .h4, .h5, .h6 {
+        margin-top: 0;
     }
 }

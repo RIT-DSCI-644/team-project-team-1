@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - DSCI644 Spring 2019 Team Project</title>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/spin.js/1.2.7/spin.min.js"></script>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -15,7 +16,9 @@
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <asp:ContentPlaceHolder ID="cphStyle" runat="server">
-            </asp:ContentPlaceHolder>
+    </asp:ContentPlaceHolder>
+    <link rel="Stylesheet" href="~/Content/Site.css" type="text/css" />
+
 </head>
 <body>
     <form runat="server">
@@ -28,6 +31,7 @@
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="respond" />
                 <asp:ScriptReference Name="svg3dtagcloud" />
+                <%--<asp:ScriptReference Name="spinner" />--%>
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
                 <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
                 <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
@@ -66,9 +70,8 @@
                 <p>&copy; <%: DateTime.Now.Year %> - DSCI644 Spring 2019 Team Project</p>
             </footer>
         </div>
-
     </form>
-        <asp:ContentPlaceHolder ID="cphScripts" runat="server">
+    <asp:ContentPlaceHolder ID="cphScripts" runat="server">
     </asp:ContentPlaceHolder>
 </body>
 </html>

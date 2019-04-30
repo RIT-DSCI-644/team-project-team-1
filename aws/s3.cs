@@ -13,6 +13,7 @@ using utilities;
 
 using model;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace aws
 {
@@ -26,6 +27,32 @@ namespace aws
         private static readonly AmazonS3Client s3Client = null;
         private static readonly string MAIN_PAGE_DATA_FILENAME = "MainPage.txt";
 
+        public static void LoadDataIntoApplicationState()
+        {
+
+            if (HttpContext.Current.Application["mainPageData"] == null)
+            {
+                HttpContext.Current.Application["mainPageData"] =
+                JsonConvert.DeserializeObject<MainPage>(ReadFromBucket(MAIN_PAGE_DATA_FILENAME));
+            }
+
+            if (HttpContext.Current.Application["conservativeDataFrequencies"] == null)
+            {
+                HttpContext.Current.Application["conservativeDataFrequencies"] =
+                GetMainPageData.WordCloud.Conservative.Tags.Zip(
+                GetMainPageData.WordCloud.Conservative.Frequencies, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+            }
+
+            if (HttpContext.Current.Application["liberalDataFrequencies"] == null)
+            {
+                HttpContext.Current.Application["liberalDataFrequencies"] =
+                GetMainPageData.WordCloud.Liberal.Tags.Zip(
+                GetMainPageData.WordCloud.Liberal.Frequencies, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+            }
+        }
+
         /// <summary>
         /// returns file payload from AWS S3 bucket as a string
         /// </summary>
@@ -38,21 +65,18 @@ namespace aws
 
             try
             {
-                //using (GetS3Client())
-                //{
-                    var request = new GetObjectRequest()
-                    {
-                        BucketName = (bucketName == string.Empty? BUCKET_NAME: bucketName),
-                        Key = keyName
-                    };
+                var request = new GetObjectRequest()
+                {
+                    BucketName = (bucketName == string.Empty ? BUCKET_NAME : bucketName),
+                    Key = keyName
+                };
 
-                    using (var response = GetS3Client.GetObject(request))
-                    using (var responseStream = response.ResponseStream)
-                    using (var reader = new StreamReader(responseStream))
-                    {
-                        responseBody = reader.ReadToEnd();
-                    }
-                //}
+                using (var response = GetS3Client.GetObject(request))
+                using (var responseStream = response.ResponseStream)
+                using (var reader = new StreamReader(responseStream))
+                {
+                    responseBody = reader.ReadToEnd();
+                }
             }
             catch (AmazonS3Exception s3Exception)
             {
@@ -62,7 +86,8 @@ namespace aws
             return responseBody;
         }
 
-        private static AmazonS3Client GetS3Client {
+        private static AmazonS3Client GetS3Client
+        {
             get
             {
                 return s3Client == null ? new AmazonS3Client(
@@ -109,16 +134,26 @@ namespace aws
         /// <returns></returns>
         public static List<string> GetAllKeysAsList(int maxKeysReturned = 1000)
         {
-            return GetAllKeys(maxKeysReturned).S3Objects.Where(x=> x.Key != "MainPage.txt").Select(x => x.Key).ToList();
+            return GetAllKeys(maxKeysReturned).S3Objects.Where(x => x.Key != "MainPage.txt").Select(x => x.Key).ToList();
         }
 
         /// <summary>
         /// get main page data from the bucket as strongly typed object of type MainPage
         /// </summary>
         /// <returns>MainPage object type</returns>
-        public static MainPage GetMainPageData()
+        public static MainPage GetMainPageData
         {
-            return JsonConvert.DeserializeObject<MainPage>(ReadFromBucket(MAIN_PAGE_DATA_FILENAME));
+            get { return (MainPage)HttpContext.Current.Application["mainPageData"]; }
+        }
+
+        public static Dictionary<string, double> GetConservativeFrequencyData
+        {
+            get { return (Dictionary<string, double>)HttpContext.Current.Application["conservativeDataFrequencies"]; }
+        }
+
+        public static Dictionary<string, double> GetLiberalFrequencyData
+        {
+            get { return (Dictionary<string, double>)HttpContext.Current.Application["liberalDataFrequencies"]; }
         }
 
         public static IndividualPage GetIndividualPageDataByKeyName(string KeyName)
