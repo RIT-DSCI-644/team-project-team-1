@@ -12,7 +12,30 @@
                     <asp:Label ID="lblName" runat="server"></asp:Label></h2>
             </div>
             <!-- -->
-            <div id='holder1' class="col-md-4"></div>
+            <div class="row">
+                <div class="column">
+                    <div class="blockquote offset">
+                        <p>Top 50 Words</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div id='holder1' class="col-md-4"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div class="blockquote offset">
+                        <p>Bottom 50 Words</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div id='holder2' class="col-md-4"></div>
+                </div>
+            </div>
         </div>
         <div class="column">
             <div class="header">

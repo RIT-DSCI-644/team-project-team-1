@@ -89,7 +89,7 @@ namespace utilities
             }
             else
             {
-                foreach (var KeyValue in dic.Where(t => t.Value > 1))
+                foreach (var KeyValue in dic)
                 {
                     sbCloud.AppendLine(
                         string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},",
@@ -276,25 +276,18 @@ namespace utilities
         public static void RenderTagCloud(string id, Dictionary<string, double> TagsAndFreqs, System.Web.UI.Page page,
             CloudContext context, PoliticalLeaningContext leaning)
         {
-            // Define the name and type of the client scripts on the page.
-            String csname1 = "tagcloud" + id;
-            Type cstype = page.GetType();
-
-            // Get a ClientScriptManager reference from the Page class.
-            ClientScriptManager cs = page.ClientScript;
-
-            // Check to see if the startup script is already registered.
-            if (!cs.IsStartupScriptRegistered(cstype, csname1))
-            {
-                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, TagsAndFreqs,
-                    context, leaning);
-                cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
-            }
+            RenderCloud(utilities.WordCloud.GenerateWordCloud(
+                id, TagsAndFreqs,context, leaning).ToString(), page, id);
         }
 
         public static void RenderTagCloud(string id, List<string> Tags, List<double> Frequencies, System.Web.UI.Page page,
         CloudContext context)
         {
+            RenderCloud(utilities.WordCloud.GenerateWordCloud(
+                id, Tags, context, Frequencies).ToString(), page, id);
+        }
+
+        private static void RenderCloud(string jsRenderScript, System.Web.UI.Page page, string id) {
             // Define the name and type of the client scripts on the page.
             String csname1 = "tagcloud" + id;
             Type cstype = page.GetType();
@@ -305,9 +298,7 @@ namespace utilities
             // Check to see if the startup script is already registered.
             if (!cs.IsStartupScriptRegistered(cstype, csname1))
             {
-                StringBuilder cstext1 = utilities.WordCloud.GenerateWordCloud(id, Tags,
-                    context, Frequencies);
-                cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
+                cs.RegisterStartupScript(cstype, csname1, jsRenderScript);
             }
         }
 

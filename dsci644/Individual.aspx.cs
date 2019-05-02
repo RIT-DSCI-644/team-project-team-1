@@ -16,14 +16,25 @@ namespace dsci644
             if (string.IsNullOrEmpty(strKey))
                 Response.Redirect("~/");
             lblName.Text = strKey;
-            var response = aws.S3CRUD.GetIndividualPageDataByKeyName(strKey+".txt");
+            var response = aws.S3CRUD.GetIndividualPageDataByKeyName(strKey + ".txt");
+            var qryTop50Tags = response.WordCloud.DistinctWords.Skip(response.WordCloud.DistinctWords.Count - 50).ToList();
+            var qryTop50Freqs = response.WordCloud.WordFrequencies.Skip(response.WordCloud.WordFrequencies.Count - 50).ToList();
+            var qryBottom50Tags = response.WordCloud.DistinctWords.Take(50).ToList();
+            var qryBottom50Freqs = response.WordCloud.WordFrequencies.Take(50).ToList();
+
             utilities.WordCloud.RenderTagCloud(
-                "holder1", response.WordCloud.DistinctWords, response.WordCloud.WordFrequencies,this,
+                "holder1", qryTop50Tags,
+                qryTop50Freqs, this,
+                utilities.WordCloud.CloudContext.Individual);
+            utilities.WordCloud.RenderTagCloud(
+                "holder2", qryBottom50Tags,
+                qryBottom50Freqs, this,
                 utilities.WordCloud.CloudContext.Individual);
             RenderStats(response);
         }
 
-        private void RenderStats(model.IndividualPage indiv) {
+        private void RenderStats(model.IndividualPage indiv)
+        {
             pAge.InnerText = indiv.Stats.Age.ToString();
             pAverageRetweetCount.InnerText = ((int)indiv.Stats.AverageRetweetCount).ToString();
             pName.InnerText = indiv.Stats.Name.ToString();
