@@ -17,19 +17,29 @@ namespace dsci644
                 Response.Redirect("~/");
             lblName.Text = strKey;
             var response = aws.S3CRUD.GetIndividualPageDataByKeyName(strKey + ".txt");
+
+            utilities.WordCloud.PoliticalLeaningContext position = 
+                (utilities.WordCloud.PoliticalLeaningContext)Enum.Parse(
+                    typeof(utilities.WordCloud.PoliticalLeaningContext), response.Stats.Position, true);
+
             var qryTop50Tags = response.WordCloud.DistinctWords.Skip(response.WordCloud.DistinctWords.Count - 50).ToList();
             var qryTop50Freqs = response.WordCloud.WordFrequencies.Skip(response.WordCloud.WordFrequencies.Count - 50).ToList();
             var qryBottom50Tags = response.WordCloud.DistinctWords.Take(50).ToList();
             var qryBottom50Freqs = response.WordCloud.WordFrequencies.Take(50).ToList();
 
+            Dictionary<string, double> dcTop50 = qryTop50Tags.Zip(qryTop50Freqs, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+
+            Dictionary<string, double> dcBottom50 = qryBottom50Tags.Zip(qryBottom50Freqs, (k, v) => new { k, v })
+              .ToDictionary(x => x.k, x => x.v);
+
             utilities.WordCloud.RenderTagCloud(
-                "holder1", qryTop50Tags,
-                qryTop50Freqs, this,
-                utilities.WordCloud.CloudContext.Individual);
+                "holder1", dcTop50, this,
+                utilities.WordCloud.CloudContext.Individual, position, 16.0);
+
             utilities.WordCloud.RenderTagCloud(
-                "holder2", qryBottom50Tags,
-                qryBottom50Freqs, this,
-                utilities.WordCloud.CloudContext.Individual);
+                "holder2", dcBottom50, this,
+                utilities.WordCloud.CloudContext.Individual, position, 4.0);
             RenderStats(response);
         }
 

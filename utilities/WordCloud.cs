@@ -25,14 +25,20 @@ namespace utilities
 
         public static Dictionary<string, S3KeyWordFreqFontMapping> GetLiberalFrequencyMatrixMappingData
         {
-            get { return (Dictionary<string, S3KeyWordFreqFontMapping>)
-                    HttpContext.Current.Application["liberalFrequencyMatrixMappingData"]; }
+            get
+            {
+                return (Dictionary<string, S3KeyWordFreqFontMapping>)
+                  HttpContext.Current.Application["liberalFrequencyMatrixMappingData"];
+            }
         }
 
         public static Dictionary<string, S3KeyWordFreqFontMapping> GetConservativeFrequencyMatrixMappingData
         {
-            get { return (Dictionary<string, S3KeyWordFreqFontMapping>)
-                    HttpContext.Current.Application["conservativeFrequencyMatrixMappingData"]; }
+            get
+            {
+                return (Dictionary<string, S3KeyWordFreqFontMapping>)
+                  HttpContext.Current.Application["conservativeFrequencyMatrixMappingData"];
+            }
         }
 
         private static Dictionary<string, S3KeyWordFreqFontMapping> SetLiberalFrequencyMatrixMappingData
@@ -51,152 +57,27 @@ namespace utilities
             }
         }
 
-        public static List<WordFrequencyMatrix> MainPageWordFrequencyMatrix = new List<WordFrequencyMatrix>() {
-            new WordFrequencyMatrix(){ Max = 200, Min = 0, FontSize = 2 },
-            new WordFrequencyMatrix(){ Max = 400, Min = 201, FontSize = 4 },
-            new WordFrequencyMatrix(){ Max = 600, Min = 401, FontSize = 6 },
-            new WordFrequencyMatrix(){ Max = 800, Min = 601, FontSize = 8 },
-            new WordFrequencyMatrix(){ Max = 1000, Min = 801, FontSize = 20 },
-            new WordFrequencyMatrix(){ Max = 1200, Min = 1001, FontSize = 22 },
-            new WordFrequencyMatrix(){ Max = 1400, Min = 1201, FontSize = 24 },
-            new WordFrequencyMatrix(){ Max = 1600, Min = 1401, FontSize = 26 },
-            new WordFrequencyMatrix(){ Max = 1800, Min = 1601, FontSize = 28 },
-            new WordFrequencyMatrix(){ Max = 2000, Min = 1801, FontSize = 30 },
-            new WordFrequencyMatrix(){ Max = 99999, Min = 2001, FontSize = 32 },
-        };
-
-        public static StringBuilder GenerateWordCloud(string WordCloudId, List<string> Tags,
-            CloudContext context = CloudContext.HomePage, List<double> Frequencies = null,
-         PoliticalLeaningContext leaning = PoliticalLeaningContext.Conservative)
-        {
-            StringBuilder sbCloud = new StringBuilder();
-
-            Dictionary<string, double> dic = Tags.Zip(Frequencies, (k, v) => new { k, v })
-              .ToDictionary(x => x.k, x => x.v);
-
-            sbCloud.AppendLine("<script type=text/javascript>");
-            sbCloud.AppendLine("       $(document).ready(function () {");
-            sbCloud.AppendLine("            var entries = [");
-
-            if (context == CloudContext.HomePage)
-            {
-                foreach (var KeyValue in dic)
-                {
-                    sbCloud.AppendLine(
-                        string.Format("                {{ label: '{0}', url: '../Individual.aspx?id={0}', target: '_top' }},",
-                        KeyValue.Key));
-                }
-            }
-            else
-            {
-                foreach (var KeyValue in dic)
-                {
-                    sbCloud.AppendLine(
-                        string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},",
-                        KeyValue.Key));
-                }
-            }
-
-            sbCloud.AppendLine("            ];");
-            sbCloud.AppendLine("            var settings = {");
-            sbCloud.AppendLine("                entries: entries,");
-            sbCloud.AppendLine("                width: 480,");
-            sbCloud.AppendLine("                height: 480,");
-            sbCloud.AppendLine("                radius: '65%',");
-            sbCloud.AppendLine("                radiusMin: 75,");
-            sbCloud.AppendLine("                bgDraw: true,");
-            sbCloud.AppendLine("                bgColor: '#fff',");
-            sbCloud.AppendLine("                opacityOver: 1.00,");
-            sbCloud.AppendLine("                opacityOut: 0.05,");
-            sbCloud.AppendLine("                opacitySpeed: 6,");
-            sbCloud.AppendLine("                fov: 800,");
-            sbCloud.AppendLine("                speed: 1,");
-            sbCloud.AppendLine("                fontFamily: 'Oswald, Arial, sans-serif',");
-            sbCloud.AppendLine("                fontSize: '15',");
-            sbCloud.AppendLine("                fontColor: '#111',");
-            sbCloud.AppendLine("                fontWeight: 'normal',//bold");
-            sbCloud.AppendLine("                fontStyle: 'normal',//italic ");
-            sbCloud.AppendLine("                fontStretch: 'normal',//wider, narrower, ultra-condensed, extra-condensed, condensed, semi-condensed, semi-expanded, expanded, extra-expanded, ultra-expanded");
-            sbCloud.AppendLine("                fontToUpperCase: true");
-            sbCloud.AppendLine("            };");
-            sbCloud.AppendLine("            //var svg3DTagCloud = new SVG3DTagCloud( document.getElementById( 'holder'  ), settings );");
-            sbCloud.AppendLine(string.Format("            $('#{0}').svg3DTagCloud(settings);", WordCloudId));
-
-            if (context == CloudContext.HomePage)
-            {
-                sbCloud.AppendLine(GenerateWordFrequencies(dic, MainPageWordFrequencyMatrix, leaning).ToString());
-                sbCloud.AppendLine("setFrequencies();");
-            }
-
-            sbCloud.AppendLine("        });");
-            sbCloud.AppendLine("</script>");
-
-            return sbCloud;
-        }
-
         public static StringBuilder GenerateWordCloud(string WordCloudId, Dictionary<string, double> TagsAndFreqs,
-         CloudContext context = CloudContext.HomePage,
+         double MaxFontSize, CloudContext context = CloudContext.HomePage,
          PoliticalLeaningContext leaning = PoliticalLeaningContext.Conservative)
         {
             StringBuilder sbCloud = new StringBuilder();
 
-            sbCloud.AppendLine("<script type=text/javascript>");
-            sbCloud.AppendLine("       $(document).ready(function () {");
-            sbCloud.AppendLine("            var entries = [");
-
-            if (context == CloudContext.HomePage)
-            {
-                foreach (var KeyValue in TagsAndFreqs)
-                {
-                    sbCloud.AppendLine(
-                        string.Format("                {{ label: '{0}', url: '../Individual.aspx?id={0}', target: '_top' }},",
-                        KeyValue.Key));
-                }
-            }
-            else
-            {
-                foreach (var KeyValue in TagsAndFreqs)
-                {
-                    sbCloud.AppendLine(
-                        string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},",
-                        KeyValue.Key));
-                }
-            }
-
-            sbCloud.AppendLine("            ];");
-            sbCloud.AppendLine("            var settings = {");
-            sbCloud.AppendLine("                entries: entries,");
-            sbCloud.AppendLine("                width: 480,");
-            sbCloud.AppendLine("                height: 480,");
-            sbCloud.AppendLine("                radius: '65%',");
-            sbCloud.AppendLine("                radiusMin: 75,");
-            sbCloud.AppendLine("                bgDraw: true,");
-            sbCloud.AppendLine("                bgColor: '#fff',");
-            sbCloud.AppendLine("                opacityOver: 1.00,");
-            sbCloud.AppendLine("                opacityOut: 0.05,");
-            sbCloud.AppendLine("                opacitySpeed: 6,");
-            sbCloud.AppendLine("                fov: 800,");
-            sbCloud.AppendLine("                speed: 1,");
-            sbCloud.AppendLine("                fontFamily: 'Oswald, Arial, sans-serif',");
-            sbCloud.AppendLine("                fontSize: '15',");
-            sbCloud.AppendLine("                fontColor: '#111',");
-            sbCloud.AppendLine("                fontWeight: 'normal',//bold");
-            sbCloud.AppendLine("                fontStyle: 'normal',//italic ");
-            sbCloud.AppendLine("                fontStretch: 'normal',//wider, narrower, ultra-condensed, extra-condensed, condensed, semi-condensed, semi-expanded, expanded, extra-expanded, ultra-expanded");
-            sbCloud.AppendLine("                fontToUpperCase: true");
-            sbCloud.AppendLine("            };");
-            sbCloud.AppendLine("            //var svg3DTagCloud = new SVG3DTagCloud( document.getElementById( 'holder'  ), settings );");
+            sbCloud.Append(StartJsScript());
+            sbCloud.Append(SetCloudControlEntitiesJsScript(TagsAndFreqs, context));
+            sbCloud.Append(CreateCloudSettingJsScript());
             sbCloud.AppendLine(string.Format("            $('#{0}').svg3DTagCloud(settings);", WordCloudId));
 
+            Dictionary<string, S3KeyWordFreqFontMapping> freqMap = null;
+
             if (context == CloudContext.HomePage)
             {
-                Dictionary<string, S3KeyWordFreqFontMapping> freqMap;
                 switch (leaning)
                 {
                     case PoliticalLeaningContext.Conservative:
                         if (GetConservativeFrequencyMatrixMappingData == null)
                         {
-                            freqMap = GenerateWordFrequencies(TagsAndFreqs, MainPageWordFrequencyMatrix, leaning);
+                            freqMap = GenerateWordFrequencies(TagsAndFreqs, MaxFontSize);
                             SetConservativeFrequencyMatrixMappingData = freqMap;
                         }
                         else
@@ -208,7 +89,7 @@ namespace utilities
                     case PoliticalLeaningContext.Liberal:
                         if (GetLiberalFrequencyMatrixMappingData == null)
                         {
-                            freqMap = GenerateWordFrequencies(TagsAndFreqs, MainPageWordFrequencyMatrix, leaning);
+                            freqMap = GenerateWordFrequencies(TagsAndFreqs, MaxFontSize);
                             SetLiberalFrequencyMatrixMappingData = freqMap;
                         }
                         else
@@ -220,74 +101,108 @@ namespace utilities
                         freqMap = new Dictionary<string, S3KeyWordFreqFontMapping>();
                         break;
                 }
-                foreach (var item in freqMap)
-                {
+            }
+            else
+            {
+                freqMap = GenerateWordFrequencies(TagsAndFreqs, MaxFontSize);
+            }
 
-                    //$("[*|href]:not([href])").find("text:contains('DEVIANTART')").attr("font-size","35")
-                    sbCloud.AppendLine(
-                        string.Format("$('[*|href]:not([href])').find(\"text:contains('{1}')\").attr('font-size','{0}');",
-                        item.Value.Front, item.Value.UppercaseKey));
-                }
-                //sbCloud.AppendLine(GenerateWordFrequencies(TagsAndFreqs, MainPageWordFrequencyMatrix, leaning).ToString());
+            foreach (var item in freqMap)
+            {
+                //$("[*|href]:not([href])").find("text:contains('DEVIANTART')").attr("font-size","35")
+                sbCloud.AppendLine(
+                    string.Format("$('[*|href]:not([href])').find(\"text:contains('{1}')\").attr('font-size','{0}');",
+                    item.Value.Font, item.Value.UppercaseKey));
+            }
+
+            if (context == CloudContext.HomePage)
+            {
                 sbCloud.AppendLine("setFrequencies();");
             }
 
-            sbCloud.AppendLine("        });");
-            sbCloud.AppendLine("</script>");
+            sbCloud.Append(EndJsScript());
 
             return sbCloud;
         }
 
+        public static string StartJsScript()
+        {
+            StringBuilder sbCloud = new StringBuilder();
+
+            sbCloud.AppendLine("<script type=text/javascript>");
+            sbCloud.AppendLine("       $(document).ready(function () {");
+
+            return sbCloud.ToString();
+        }
+
+        public static string EndJsScript()
+        {
+            StringBuilder sbCloud = new StringBuilder();
+            sbCloud.AppendLine("        });");
+            sbCloud.AppendLine("</script>");
+            return sbCloud.ToString();
+        }
+
+        public static string SetCloudControlEntitiesJsScript(Dictionary<string, double> TagsAndFreqs,
+            CloudContext context = CloudContext.HomePage)
+        {
+            StringBuilder sbCloud = new StringBuilder();
+            sbCloud.AppendLine("            var entries = [");
+            if (context == CloudContext.HomePage)
+            {
+                foreach (var KeyValue in TagsAndFreqs)
+                {
+                    sbCloud.AppendLine(
+                        string.Format("                {{ label: '{0}', url: '../Individual.aspx?id={0}', target: '_top' }},",
+                        KeyValue.Key));
+                }
+            }
+            else
+            {
+                foreach (var KeyValue in TagsAndFreqs)
+                {
+                    sbCloud.AppendLine(
+                        string.Format("                {{ label: '{0}', url: '#{0}', target: '_self' }},",
+                        KeyValue.Key));
+                }
+            }
+            sbCloud.AppendLine("            ];");
+            return sbCloud.ToString();
+        }
+
         public static Dictionary<string, S3KeyWordFreqFontMapping> GenerateWordFrequencies(
-            Dictionary<string, double> KeyValues,
-            List<WordFrequencyMatrix> Matrix, PoliticalLeaningContext leaning)
+            Dictionary<string, double> KeyValues, double MaxFontSize)
         {
             StringBuilder sbWordFrequencies = new StringBuilder();
             Dictionary<string, S3KeyWordFreqFontMapping> freqMap = new Dictionary<string, S3KeyWordFreqFontMapping>();
+
+            var maxFreq = KeyValues.Max(t => t.Value);
+            double maxFont = MaxFontSize;
+            double minFont = 2.0;
 
             //set font-size
             foreach (var keyValue in KeyValues)
             {
                 var key = keyValue.Key;
                 double value = keyValue.Value;
-                for (int j = 0; j < Matrix.Count; j++)
-                {
-                    var min = Matrix[j].Min;
-                    var max = Matrix[j].Max;
-                    var font = Matrix[j].FontSize;
+                int computedFont = (int)(((maxFont * ((value * 100) / maxFreq)) / 100) + minFont) * 2;
 
-                    if ((value >= min && value <= max) || (value >= max && j == (Matrix.Count - 1)))
-                    {
-                        //found or set to max matrix value
-                        freqMap.Add(key, new S3KeyWordFreqFontMapping()
-                        {
-                            OrigKey = key,
-                            UppercaseKey = key.ToUpper(),
-                            Frequency = value,
-                            Front = font
-                        });
-                    }
-                }
+                freqMap.Add(key, new S3KeyWordFreqFontMapping()
+                {
+                    OrigKey = key,
+                    UppercaseKey = key.ToUpper(),
+                    Frequency = value,
+                    Font = computedFont
+                });
             }
 
             return freqMap;
         }
 
         public static void RenderTagCloud(string id, Dictionary<string, double> TagsAndFreqs, System.Web.UI.Page page,
-            CloudContext context, PoliticalLeaningContext leaning)
+            CloudContext context, PoliticalLeaningContext leaning, double MaxFontSize= 15.0)
         {
-            RenderCloud(utilities.WordCloud.GenerateWordCloud(
-                id, TagsAndFreqs,context, leaning).ToString(), page, id);
-        }
 
-        public static void RenderTagCloud(string id, List<string> Tags, List<double> Frequencies, System.Web.UI.Page page,
-        CloudContext context)
-        {
-            RenderCloud(utilities.WordCloud.GenerateWordCloud(
-                id, Tags, context, Frequencies).ToString(), page, id);
-        }
-
-        private static void RenderCloud(string jsRenderScript, System.Web.UI.Page page, string id) {
             // Define the name and type of the client scripts on the page.
             String csname1 = "tagcloud" + id;
             Type cstype = page.GetType();
@@ -298,10 +213,38 @@ namespace utilities
             // Check to see if the startup script is already registered.
             if (!cs.IsStartupScriptRegistered(cstype, csname1))
             {
-                cs.RegisterStartupScript(cstype, csname1, jsRenderScript);
+                cs.RegisterStartupScript(cstype, csname1, utilities.WordCloud.GenerateWordCloud(
+                id, TagsAndFreqs, MaxFontSize, context, leaning).ToString());
             }
         }
 
+        private static string CreateCloudSettingJsScript()
+        {
+            StringBuilder sbCloudSettings = new StringBuilder();
+
+            sbCloudSettings.AppendLine("            var settings = {");
+            sbCloudSettings.AppendLine("                entries: entries,");
+            sbCloudSettings.AppendLine("                width: 480,");
+            sbCloudSettings.AppendLine("                height: 480,");
+            sbCloudSettings.AppendLine("                radius: '65%',");
+            sbCloudSettings.AppendLine("                radiusMin: 75,");
+            sbCloudSettings.AppendLine("                bgDraw: true,");
+            sbCloudSettings.AppendLine("                bgColor: '#fff',");
+            sbCloudSettings.AppendLine("                opacityOver: 1.00,");
+            sbCloudSettings.AppendLine("                opacityOut: 0.05,");
+            sbCloudSettings.AppendLine("                opacitySpeed: 6,");
+            sbCloudSettings.AppendLine("                fov: 800,");
+            sbCloudSettings.AppendLine("                speed: 1,");
+            sbCloudSettings.AppendLine("                fontFamily: 'Oswald, Arial, sans-serif',");
+            sbCloudSettings.AppendLine("                fontSize: '15',");
+            sbCloudSettings.AppendLine("                fontColor: '#111',");
+            sbCloudSettings.AppendLine("                fontWeight: 'normal',//bold");
+            sbCloudSettings.AppendLine("                fontStyle: 'normal',//italic ");
+            sbCloudSettings.AppendLine("                fontStretch: 'normal',//wider, narrower, ultra-condensed, extra-condensed, condensed, semi-condensed, semi-expanded, expanded, extra-expanded, ultra-expanded");
+            sbCloudSettings.AppendLine("                fontToUpperCase: true");
+            sbCloudSettings.AppendLine("            };");
+            return sbCloudSettings.ToString();
+        }
     }
 
     public class S3KeyWordFreqFontMapping
@@ -309,6 +252,6 @@ namespace utilities
         public string OrigKey { get; set; }
         public string UppercaseKey { get; set; }
         public double Frequency { get; set; }
-        public int Front { get; set; }
+        public int Font { get; set; }
     }
 }
